@@ -42,6 +42,10 @@ if (config.env === 'development') {
 // enable cors
 app.use(cors());
 
+// set static file
+app.use(express.static(path.join(__dirname, '../public')));
+app.use('/sbadmin', express.static(path.join(__dirname, '../public/sbadmin')));
+
 // testing middleware
 app.use((req, res, next) => {
   console.log('this is a middleware');

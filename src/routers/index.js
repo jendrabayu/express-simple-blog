@@ -1,9 +1,8 @@
 const express = require('express');
+const {dashboardController} = require('../controllers/admin');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  return res.status(200).send('<h1>Hello World</h1>');
-});
+router.get('/', dashboardController.viewIndex);
 
 module.exports = router;
