@@ -4,7 +4,8 @@ const cors = require('cors');
 const path = require('path');
 const createError = require('http-errors');
 const httpStatus = require('http-status');
-const router = require('./routers');
+const routes = require('./routers');
+const adminRoutes = require('./routers/admin');
 const config = require('./config/config');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -53,7 +54,8 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use('/', router);
+app.use('/', routes);
+app.use('/', adminRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
