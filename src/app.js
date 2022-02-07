@@ -2,7 +2,6 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
-const createError = require('http-errors');
 const httpStatus = require('http-status');
 const routes = require('./routers');
 const adminRoutes = require('./routers/admin');
@@ -10,6 +9,12 @@ const config = require('./config/config');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDoc = require('./docs/apidoc.json');
+const errorHandler = require('./middlewares/error');
+const ApiError = require('./utils/ApiError');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 const app = express();
 
@@ -22,6 +27,17 @@ app.use(methodOverride('_method'));
 
 // trust first proxy
 app.set('trust proxy', 1);
+// session
+app.use(
+  session({
+    secret: 'rahasia',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {maxAge: 3600000},
+  })
+);
+
+app.use(flash());
 
 // parse json request body
 app.use(express.json());
@@ -34,6 +50,14 @@ app.use(cookieParser());
 
 // set security HTTP headers
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      'img-src': ["'self'", 'https: data:'],
+    },
+  })
+);
 
 // logger
 if (config.env === 'development') {
@@ -42,14 +66,23 @@ if (config.env === 'development') {
 
 // enable cors
 app.use(cors());
+app.options('*', cors());
 
 // set static file
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/sbadmin', express.static(path.join(__dirname, '../public/sbadmin')));
 
-// testing middleware
-app.use((req, res, next) => {
-  console.log('this is a middleware');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+
+app.use(function (req, res, next) {
+  //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+  res.header('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+  const alerts = req.flash('alerts');
+  res.locals.alerts = alerts.length > 0 ? alerts[0] : {};
+
   next();
 });
 
@@ -59,19 +92,10 @@ app.use('/', adminRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(httpStatus.NOT_FOUND));
+  next(new ApiError(httpStatus.NOT_FOUND, httpStatus[httpStatus.NOT_FOUND]));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || httpStatus.INTERNAL_SERVER_ERROR);
-
-  res.render('error');
-});
+app.use(errorHandler);
 
 module.exports = app;

@@ -7,4 +7,5 @@ module.exports = {
   env: process.env.NODE_ENV,
   app_name: process.env.APP_NAME,
   port: process.env.PORT,
+  jwt_secret: process.env.JWT_SECRET,
 };

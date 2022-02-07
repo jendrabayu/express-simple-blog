@@ -1,0 +1,17 @@
+<% if (alerts.error) { %>
+  <div class="alert alert-danger" role="alert">
+    <%= alerts.error %>
+  </div>
+  <% } %>
+
+    <% if (alerts.success) { %>
+      <div class="alert alert-success" role="alert">
+        <%= alerts.success %>
+      </div>
+      <% } %>
+
+        <% if (alerts.info) { %>
+          <div class="alert alert-info" role="alert">
+            <%= alerts.info %>
+          </div>
+          <% } %>

@@ -1,5 +1,5 @@
 'use strict';
-const { Model } = require('sequelize');
+const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
@@ -16,8 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       avatar_path: DataTypes.STRING,
       password: DataTypes.STRING,
       role: DataTypes.ENUM('SUPER ADMIN', 'ADMIN'),
-      created_at: DataTypes.DATE,
-      updated_at: DataTypes.DATE,
     },
     {
       sequelize,
