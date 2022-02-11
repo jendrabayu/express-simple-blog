@@ -1,0 +1,21 @@
+<nav class="mt-3">
+  <ul class="pagination justify-content-center">
+    <li class="page-item <% if (data.current_page == 1) { %> disabled <% } %>">
+      <a class="page-link" href="<%= `/${route_name}?page=${parseInt(data.current_page)-1}` %> "
+        >Previous</a
+      >
+    </li>
+
+    <% for( let j=1; j < data.last_page + 1; j++ ) { %>
+    <li class="page-item <% if (data.current_page == j) { %> active <% } %>">
+      <a class="page-link" href="<%=  `/${route_name}?page=${j}` %> "> <%= j %> </a>
+    </li>
+    <% } %>
+
+    <li class="page-item <% if (data.current_page == data.last_page) { %> disabled <% } %>">
+      <a class="page-link" href="<%= `/${route_name}?page=${parseInt(data.current_page)+1}` %> "
+        >Next</a
+      >
+    </li>
+  </ul>
+</nav>
