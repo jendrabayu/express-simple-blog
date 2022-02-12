@@ -28,6 +28,7 @@ module.exports = {
       title: {
         type: Sequelize.STRING(150),
         allowNull: false,
+        unique: true,
       },
       slug: {
         type: Sequelize.STRING,

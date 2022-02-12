@@ -6,6 +6,8 @@ const getPagingData = ({count: total, rows: data}, per_page, current_page) => {
   // page 2 -> (5 * 2) - 5 = 5
   // page 3 -> (5 * 3) - 5 = 10
 
+  total = total.length;
+
   return {
     total,
     per_page,

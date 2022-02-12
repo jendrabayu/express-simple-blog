@@ -15,6 +15,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING(100),
         allowNull: false,
+        unique: true,
       },
       avatar_path: {
         type: Sequelize.STRING,

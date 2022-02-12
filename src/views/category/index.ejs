@@ -1,0 +1,74 @@
+<%- include('../partials/header.ejs', {title: 'Kategori' }) %>
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+  <!-- Sidebar -->
+  <%- include('../partials/sidebar.ejs') %>
+  <!-- End of Sidebar -->
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Main Content -->
+    <div id="content">
+      <!-- Topbar -->
+      <%- include('../partials/topbar.ejs') %>
+      <!-- End of Topbar -->
+
+      <!-- Begin Page Content -->
+      <div class="container-fluid">
+        <!-- Page Heading -->
+        <h1 class="h3 mb-4 text-gray-800">Kategori</h1>
+
+        <%- include('../partials/alert.ejs') %>
+
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 text-right">
+            <button type="button" class="btn btn-primary btn-sm" id="btn-add">
+              Tambah <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <%- include('./table.ejs') %> <%- include('../partials/pagination.ejs', {data:
+            categories, route_name: 'categories'}) %>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <%- include('../partials/footer.ejs') %>
+    <!-- End of Footer -->
+  </div>
+  <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+
+<form method="post" class="d-node" id="form-delete"></form>
+
+<%- include('./modal_add.ejs') %> <%- include('./modal_edit.ejs') %> <%-
+include('../partials/js.ejs') %>
+
+<script>
+  $(function () {
+    $('#btn-add').on('click', function () {
+      const modal = $('#modal-add');
+      modal.find('form input[name="name"]').val('');
+      modal.modal('show');
+    });
+
+    $('table').on('click', '.btn-edit', function () {
+      const modal = $('#modal-edit');
+      modal.find('form').prop('action', `/categories/${$(this).data('id')}?_method=put`);
+      modal.find('form input[name="name"]').val($(this).data('name'));
+      modal.modal('show');
+    });
+
+    $('table').on('click', '.btn-delete', function () {
+      const form = $('#form-delete');
+      form.prop('action', `/categories/${$(this).data('id')}?_method=delete`);
+      form.submit();
+    });
+  });
+</script>

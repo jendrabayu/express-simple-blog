@@ -18,6 +18,8 @@ const flash = require('connect-flash');
 
 const app = express();
 
+app.locals.moment = require('moment');
+
 // view engine setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -49,15 +51,16 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 // set security HTTP headers
-app.use(helmet());
-app.use(
-  helmet.contentSecurityPolicy({
-    useDefaults: true,
-    directives: {
-      'img-src': ["'self'", 'https: data:'],
-    },
-  })
-);
+// app.use(helmet());
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     useDefaults: true,
+//     directives: {
+//       'img-src': ["'self'", 'https: data:'],
+//       'script-src': ["'self'", 'unsafe-inline'],
+//     },
+//   })
+// );
 
 // logger
 if (config.env === 'development') {
@@ -75,10 +78,10 @@ app.use('/sbadmin', express.static(path.join(__dirname, '../public/sbadmin')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 app.use(function (req, res, next) {
-  //https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
-  res.header('Cross-Origin-Embedder-Policy', 'unsafe-none');
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+  // res.header('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  // res.header('Access-Control-Allow-Origin', '*');
+  // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
   const alerts = req.flash('alerts');
   res.locals.alerts = alerts.length > 0 ? alerts[0] : {};

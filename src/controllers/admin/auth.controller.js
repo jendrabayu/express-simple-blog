@@ -30,7 +30,6 @@ const login = catchAsync(async (req, res) => {
     const token = tokenService.generateToken(user);
 
     // expiry time is 12 hours from now
-
     res.cookie('token', token, {
       httpOnly: true,
       maxAge: 12 * 3600000,

@@ -1,24 +1,33 @@
 'use strict';
 
+const slug = require('../../utils/slug');
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-     */
+    const categories = [
+      'Quick and Easy',
+      'Vegan',
+      'Pasta',
+      'Soups',
+      'Instant Pot',
+      'Vegetarian',
+      'Tacos',
+      'Salads',
+      'Meal Prep',
+      'Sugar-Free',
+      'Bowls',
+      'Dinner',
+    ].map(name => ({
+      name,
+      slug: slug(name),
+      created_at: new Date(),
+      updated_at: new Date(),
+    }));
+
+    await queryInterface.bulkInsert('categories', categories, {});
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+    await queryInterface.bulkDelete('categories', null, {});
   },
 };
