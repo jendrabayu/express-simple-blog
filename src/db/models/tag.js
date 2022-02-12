@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsToMany(models.Post, {
         through: 'tag_post',
         as: 'posts',
+        timestamps: false,
       });
     }
   }

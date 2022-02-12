@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authRoute = require('./auth.route');
 const categoryRoute = require('./category.route');
+const tagRoute = require('./tag.route');
 
 const defaultRoutes = [
   {
@@ -11,6 +12,10 @@ const defaultRoutes = [
   {
     path: '/categories',
     route: categoryRoute,
+  },
+  {
+    path: '/tags',
+    route: tagRoute,
   },
 ];
 
